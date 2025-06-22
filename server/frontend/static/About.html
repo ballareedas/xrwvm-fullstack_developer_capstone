@@ -1,21 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
 <html>
 <head>
-  <!-- Link the style sheet here -->
+  <title>About Us - Best Cars</title>
+  <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    .leadership-container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      gap: 30px;
+    }
+    .leader-card {
+      width: 300px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .leader-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    .leader-card .card-body {
+      padding: 15px;
+      text-align: center;
+    }
+    .leader-name {
+      background-color: rebeccapurple;
+      color: white;
+      padding: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
-<div>
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color:darkturquoise; height: 1in;">
+
+<body>
+
+  <!-- ✅ Navbar Section -->
+  <nav class="navbar navbar-expand-lg" style="background-color:darkturquoise; height: 1in;">
     <div class="container-fluid">
-      <h2 style="padding-right: 5%;">Dealerships</h2>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <h2 style="color: white; padding-right: 20px;">Dealerships</h2>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" style="font-size: larger;" aria-current="page" href="/">Home</a>
+            <a class="nav-link" style="font-size: larger;" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" style="font-size: larger;" href="/about">About Us</a>
+            <a class="nav-link active" style="font-size: larger; font-weight: bold; color: darkblue;" href="/about">About Us</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" style="font-size: larger;" href="/contact">Contact Us</a>
@@ -24,45 +65,56 @@
       </div>
     </div>
   </nav>
-  
-    <div class="card" style="width: 80%;margin: auto; margin-top:5%;">
-      <div class="banner" name="about-header">
-      <!-- Insert header information here -->
-      </div>
-      <div style="display: flex;flex-direction: row; margin:auto">
-      <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
+
+  <!-- ✅ About Content -->
+  <div class="container">
+    <h1 class="text-center mt-5">Our Leadership Team</h1>
+    <p class="text-center">
+      At Best Cars Dealership, we're driven by a passionate team of automotive experts dedicated to bringing you
+      the best vehicles and exceptional customer service. Our leadership brings decades of integrity, innovation,
+      and excellence to your journey.
+    </p>
+
+    <div class="leadership-container">
+
+      <!-- Michael -->
+      <div class="leader-card">
+        <img src="{% static 'team/michael.jpg' %}" alt="Michael Rodriguez">
         <div class="card-body">
-          <p class="title">Person1</p>
-          <p>Person1 Title</p>
-          <p class="card-text">Some text that explains the person1 in about 2 short sentences</p>
-          <p>person1@example.com</p>
+          <div class="leader-name">Michael Rodriguez</div>
+          <p><strong>CEO & Founder</strong></p>
+          <p>Michael built Best Cars with one core value: trust. With over 25 years in the industry, he leads with
+            compassion and commitment, ensuring every customer leaves with a smile—and the perfect car.</p>
+          <p><em>michael.rodriguez@bestcars.com</em></p>
         </div>
       </div>
 
-      <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
+      <!-- Sarah -->
+      <div class="leader-card">
+        <img src="{% static 'team/sarah.jpg' %}" alt="Sarah Chen">
         <div class="card-body">
-          <p class="title">Person2</p>
-          <p>Person2 Title</p>
-          <p class="card-text">Some text that explains the person2 in about 2 short sentences</p>
-          <p>person2@example.com</p>
+          <div class="leader-name">Sarah Chen</div>
+          <p><strong>Chief Operations Officer</strong></p>
+          <p>Sarah is the heartbeat of our operations. Her innovative leadership and sharp eye for detail ensure
+            a seamless experience—from test drive to keys in hand.</p>
+          <p><em>sarah.chen@bestcars.com</em></p>
         </div>
       </div>
 
-      <div class="card" style="width: 30%;">
-        <img class="card-img-top" src="/static/person.png" alt="Card image">
+      <!-- David -->
+      <div class="leader-card">
+        <img src="{% static 'team/david.jpg' %}" alt="David Wilson">
         <div class="card-body">
-          <p class="title">Person3</p>
-          <p>Person3 Title</p>
-          <p class="card-text">Some text that explains the person3 in about 2 short sentences</p>
-          <p>person3@example.com</p>
+          <div class="leader-name">David Wilson</div>
+          <p><strong>VP of Sales</strong></p>
+          <p>With an unwavering focus on customer satisfaction, David leads our sales team in making every buyer
+            feel like family. His integrity is the driving force behind our trusted name.</p>
+          <p><em>david.wilson@bestcars.com</em></p>
         </div>
       </div>
-    </div>
-    </div>
-    </div>
-    
-</div>
 
+    </div>
+  </div>
+
+</body>
 </html>

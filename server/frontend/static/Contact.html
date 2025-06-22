@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us - Best Cars</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        body {
+            background: linear-gradient(to right, #dfe9f3, #ffffff);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .navbar {
+            background-color: darkturquoise;
+            height: 1in;
+        }
+
+        .navbar h2 {
+            color: white;
+            padding-right: 20px;
+        }
+
+        .nav-link {
+            font-size: larger;
+        }
+
+        .nav-link.active {
+            font-weight: bold;
+            color: darkblue !important;
+        }
+
+        .contact-wrapper {
+            max-width: 1000px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .contact-image {
+            flex: 1 1 40%;
+        }
+
+        .contact-image img {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        .contact-details {
+            flex: 1 1 55%;
+        }
+
+        .contact-details h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+            color: darkslateblue;
+        }
+
+        .contact-details p {
+            font-size: 18px;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #5a189a;
+        }
+
+        .map {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .contact-wrapper {
+                flex-direction: column;
+            }
+
+            .contact-image, .contact-details {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <h2>Dealerships</h2>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/contact">Contact Us</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Two-column layout starts here -->
+<div class="contact-wrapper">
+
+    <!-- Left: Dealership Image -->
+    <div class="contact-image">
+        <img src="{% static 'contactus.jpg' %}" alt="Dealership Building">
+    </div>
+
+    <!-- Right: Contact Information -->
+    <div class="contact-details">
+        <h1>Get in Touch</h1>
+        <p><span class="highlight">Address:</span> 123 Premium Auto Blvd, Motor City, MI 48201, USA</p>
+        <p><span class="highlight">Phone:</span> +1 (800) 123-4567 (24/7 Customer Line)</p>
+        <p><span class="highlight">Email:</span> support@bestcars.com</p>
+        <p><span class="highlight">Sales Enquiries:</span> sales@bestcars.com</p>
+        <p><span class="highlight">Working Hours:</span> Mon - Sat | 9:00 AM - 7:00 PM</p>
+        <p><span class="highlight">Follow Us:</span>
+            <a href="#">Facebook</a> |
+            <a href="#">Instagram</a> |
+            <a href="#">Twitter</a>
+        </p>
+        <iframe class="map"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.0569435310684!2d-122.41941508468223!3d37.77492977975996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808f7e2d5a021b13%3A0xfed7f0d55d04cc68!2sCar%20Dealership!5e0!3m2!1sen!2sus!4v1622234161911!5m2!1sen!2sus"
+                allowfullscreen="" loading="lazy">
+        </iframe>
+    </div>
+
+</div>
+
+</body>
+</html>
