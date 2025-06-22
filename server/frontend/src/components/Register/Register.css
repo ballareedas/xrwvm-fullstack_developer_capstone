@@ -3,7 +3,7 @@
   flex-direction: column;
   margin: auto;
   margin-top: 2%;
-  background-color: darkturquoise;
+  background-color: hsl(181, 76%, 33%);
   min-width: 350px;
   width: 30%;
 }
@@ -39,18 +39,18 @@
   margin-right: 30%;
   cursor: pointer;
   font-size: large;
-  color: rgb(97, 64, 128);
+  color: rgb(88, 44, 128);
   border-radius: 10px;
   height:50px;
 }
 
 .submit:hover {
-  background-color: wheat;
+  background-color: rgb(234, 189, 106);
 }
 
 .header{
   font: 4em sans-serif;
-  color: white;
+  color: rgb(62, 52, 52);
   margin: .5cm;
 }
 
