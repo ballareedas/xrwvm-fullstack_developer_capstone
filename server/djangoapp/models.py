@@ -13,7 +13,7 @@ class CarMake(models.Model):
     founded_year = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name} ({self.founded_year})" if self.founded_year else self.name
+        return self.name
 
 
 from django.db import models
@@ -42,7 +42,7 @@ class CarModel(models.Model):
 
     # many to one relationship
     car_make = models.ForeignKey('CarMake', on_delete=models.CASCADE, related_name='models')
-    dealer_id = models.IntegerField()
+    dealer_id = models.IntegerField(null=True,blank=True);
     name = models.CharField(max_length=100)
     car_type = models.CharField(max_length=20, choices=CAR_TYPES, default=SEDAN)
     year = models.IntegerField(default=2023,
@@ -54,5 +54,5 @@ class CarModel(models.Model):
     color = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.car_make.name} {self.name} ({self.year.year})"
+        return self.name
 
