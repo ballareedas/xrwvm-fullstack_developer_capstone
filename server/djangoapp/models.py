@@ -56,3 +56,21 @@ class CarModel(models.Model):
     def __str__(self):
         return self.name
 
+class Review(models.Model):
+    dealership = models.IntegerField()
+    name = models.CharField(max_length=100)
+    review = models.TextField()
+    purchase = models.BooleanField(default=False)
+    purchase_date = models.DateField(null=True, blank=True)
+    car_make = models.CharField(max_length=100)
+    car_model = models.CharField(max_length=100)
+    car_year = models.IntegerField()
+    sentiment = models.CharField(max_length=20, default='neutral')  # Sentiment from analyzer
+
+    def __str__(self):
+        return self.name
+
+
+    # def __str__(self):
+    #     return self.name
+

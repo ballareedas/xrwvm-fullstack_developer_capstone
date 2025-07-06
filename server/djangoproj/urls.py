@@ -31,13 +31,15 @@ urlpatterns = [
     path('login/', TemplateView.as_view(template_name="index.html")),
     path('register/', TemplateView.as_view(template_name="index.html")),
     path('dealers/', TemplateView.as_view(template_name="index.html")),
-
+    path('dealer/<int:dealer_id>', TemplateView.as_view(template_name="index.html")),
+    path('postreview/<int:dealer_id>', TemplateView.as_view(template_name="index.html")),
+    
     # Django app and admin
     path('djangoapp/', include('djangoapp.urls')),
     path('admin/', admin.site.urls),
 
     # React SPA catch-all (MUST be last)
-    # re_path(r'^.*$', TemplateView.as_view(template_name="index.html")),
+    #  re_path(r'^.*$', TemplateView.as_view(template_name="index.html")),
 ]
 
 # Serve static React files (optional, mostly needed during development)

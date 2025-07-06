@@ -21,47 +21,60 @@ const PostReview = () => {
   let review_url = root_url+`djangoapp/add_review`;
   let carmodels_url = root_url+`djangoapp/get_cars`;
 
-  const postreview = async ()=>{
-    let name = sessionStorage.getItem("firstname")+" "+sessionStorage.getItem("lastname");
-    //If the first and second name are stores as null, use the username
-    if(name.includes("null")) {
-      name = sessionStorage.getItem("username");
-    }
-    if(!model || review === "" || date === "" || year === "" || model === "") {
-      alert("All details are mandatory")
-      return;
-    }
+  const postreview = async () => {
+  let name = sessionStorage.getItem("firstname") + " " + sessionStorage.getItem("lastname");
+  
+  // If the first and second name are stored as null, use the username
+  if (name.includes("null")) {
+    name = sessionStorage.getItem("username");
+  }
 
-    let model_split = model.split(" ");
-    let make_chosen = model_split[0];
-    let model_chosen = model_split[1];
+  if (!model || review.trim() === "" || date === "" || year === "" || model === "") {
+    alert("All details are mandatory");
+    return;
+  }
 
-    let jsoninput = JSON.stringify({
-      "name": name,
-      "dealership": id,
-      "review": review,
-      "purchase": true,
-      "purchase_date": date,
-      "car_make": make_chosen,
-      "car_model": model_chosen,
-      "car_year": year,
-    });
+  // Safer delimiter for make and model
+  let [make_chosen, model_chosen] = model.split("::"); // <-- Update your select to use "::" as delimiter
 
-    console.log(jsoninput);
+  let jsoninput = JSON.stringify({
+  name: name,
+  dealership: parseInt(id),
+  review: review,
+  purchase: true,
+  purchase_date: date,
+  car_make: make_chosen,
+  car_model: model_chosen,
+  car_year: parseInt(year),
+});
+
+
+  console.log("Review being posted:", jsoninput);
+
+  try {
     const res = await fetch(review_url, {
       method: "POST",
       headers: {
-          "Content-Type": "application/json",
+        "Content-Type": "application/json",
       },
       body: jsoninput,
-  });
+    });
 
-  const json = await res.json();
-  if (json.status === 200) {
-      window.location.href = window.location.origin+"/dealer/"+id;
-  }
+    const json = await res.json();
+    console.log("Response from backend:", res.status, json);
 
+    if (res.status === 200 && json.status === 200) {
+      window.location.href = window.location.origin + "/dealer/" + id;
+    } else {
+      alert("Failed to post review. Server response: " + (json.message || "Unknown error"));
+    }
+
+  } catch (err) {
+    console.error("Error occurred while posting review:", err);
+    alert("Network error. Please try again later.");
   }
+};
+
   const get_dealer = async ()=>{
     const res = await fetch(dealer_url, {
       method: "GET"
@@ -101,12 +114,22 @@ const PostReview = () => {
       </div>
       <div className='input_field'>
       Car Make 
-      <select name="cars" id="cars" onChange={(e) => setModel(e.target.value)}>
+      {/* <select name="cars" id="cars" onChange={(e) => setModel(e.target.value)}>
       <option value="" selected disabled hidden>Choose Car Make and Model</option>
       {carmodels.map(carmodel => (
           <option value={carmodel.CarMake+" "+carmodel.CarModel}>{carmodel.CarMake} {carmodel.CarModel}</option>
       ))}
-      </select>        
+      </select>   */}
+
+      <select name="cars" id="cars" onChange={(e) => setModel(e.target.value)}>
+      <option value="" selected disabled hidden>Choose Car Make and Model</option>
+      {carmodels.map(carmodel => (
+        <option value={`${carmodel.CarMake}::${carmodel.CarModel}`} key={`${carmodel.CarMake}-${carmodel.CarModel}`}>
+          {carmodel.CarMake} {carmodel.CarModel}
+        </option>
+      ))}
+      </select>
+
       </div >
 
       <div className='input_field'>

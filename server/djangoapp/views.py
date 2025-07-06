@@ -15,6 +15,8 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from .models import CarMake, CarModel
 from .populate import initiate
+from .models import Review
+
 
 from .restapis import get_request, analyze_review_sentiments, post_review
 # Get an instance of a logger
@@ -90,19 +92,39 @@ def get_dealerships(request, state="All"):
     return JsonResponse({"status":200,"dealers":dealerships})
 
 
-# Create a `get_dealer_reviews` view to render the reviews of a dealer
 def get_dealer_reviews(request, dealer_id):
-    # if dealer id has been provided
-    if(dealer_id):
-        endpoint = "/fetchReviews/dealer/"+str(dealer_id)
-        reviews = get_request(endpoint)
-        for review_detail in reviews:
-            response = analyze_review_sentiments(review_detail['review'])
-            print(response)
-            review_detail['sentiment'] = response['sentiment']
-        return JsonResponse({"status":200,"reviews":reviews})
-    else:
-        return JsonResponse({"status":400,"message":"Bad Request"})
+    reviews = []
+
+    if dealer_id:
+        # 🔄 Fetch from external backend API
+        endpoint = f"/fetchReviews/dealer/{dealer_id}"
+        api_reviews = get_request(endpoint)  # This calls http://localhost:3030 + endpoint
+
+        # Add sentiment to API reviews
+        for review in api_reviews:
+            sentiment_result = analyze_review_sentiments(review.get("review", ""))
+            review["sentiment"] = sentiment_result.get("sentiment", "neutral")
+            reviews.append(review)
+
+        # 🔄 Optionally add reviews stored locally in Django DB
+        local_reviews = Review.objects.filter(dealership=dealer_id)
+        for obj in local_reviews:
+            reviews.append({
+                "name": obj.name,
+                "review": obj.review,
+                "purchase": obj.purchase,
+                "purchase_date": obj.purchase_date,
+                "car_make": obj.car_make,
+                "car_model": obj.car_model,
+                "car_year": obj.car_year,
+                "sentiment": obj.sentiment,
+            })
+
+        return JsonResponse({"status": 200, "reviews": reviews})
+    
+    return JsonResponse({"status": 400, "message": "Bad Request"})
+
+
 
 # Create a `get_dealer_details` view to render the dealer details
 
@@ -114,18 +136,47 @@ def get_dealer_details(request, dealer_id):
     else:
         return JsonResponse({"status":400,"message":"Bad Request"})
 
-# Create a `add_review` view to submit a review
 
+# def add_review(request):
+#     if(request.user.is_anonymous == False):
+#         data = json.loads(request.body)
+#         try:
+#             response = post_review(data)
+#             return JsonResponse({"status":200})
+#         except:
+#             return JsonResponse({"status":401,"message":"Error in posting review"})
+#     else:
+#         return JsonResponse({"status":403,"message":"Unauthorized"})
+
+@csrf_exempt
 def add_review(request):
-    if(request.user.is_anonymous == False):
-        data = json.loads(request.body)
+    if request.method == "POST":
         try:
-            response = post_review(data)
-            return JsonResponse({"status":200})
-        except:
-            return JsonResponse({"status":401,"message":"Error in posting review"})
-    else:
-        return JsonResponse({"status":403,"message":"Unauthorized"})
+            review_data = json.loads(request.body)
+            review_text = review_data.get("review", "")
+            sentiment_result = analyze_review_sentiments(review_text)
+            sentiment = sentiment_result.get("sentiment", "neutral")
+
+            # ✅ Save to database (create Review object)
+            review_obj = Review(
+                dealership=review_data["dealership"],
+                name=review_data["name"],
+                review=review_text,
+                purchase=review_data["purchase"],
+                purchase_date=datetime.strptime(review_data["purchase_date"], "%Y-%m-%d"),
+                car_make=review_data["car_make"],
+                car_model=review_data["car_model"],
+                car_year=review_data["car_year"],
+                sentiment=sentiment,
+            )
+            review_obj.save()
+
+            return JsonResponse({"status": 200, "message": "Review saved", "sentiment": sentiment})
+
+        except Exception as e:
+            print("Review POST failed:", e)
+            return JsonResponse({"status": 500, "error": "Error inserting review"})
+
 
 def get_cars(request):
     count = CarMake.objects.filter().count()
