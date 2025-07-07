@@ -166,7 +166,7 @@ const Dealer = () => {
         </a>
       );
     }
-  }, []);
+  }, [get_dealer, get_reviews, post_review]);
 
   return (
     <div style={{ margin: "20px" }}>
