@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import "./Dealers.css";
 import "../assets/style.css";
 import Header from '../Header/Header';
@@ -26,7 +26,7 @@ const Dealers = () => {
     }
   }
 
-  const get_dealers = async ()=>{
+  const get_dealers = useCallback(async ()=>{
     const res = await fetch(dealer_url, {
       method: "GET"
     });
@@ -41,7 +41,7 @@ const Dealers = () => {
       setStates(Array.from(new Set(states)))
       setDealersList(all_dealers)
     }
-  }
+  }, [dealer_url]);
   useEffect(() => {
     get_dealers();
   },[get_dealers]);  
@@ -88,7 +88,7 @@ return(
           }
         </tr>
       ))}
-     </table>;
+     </table>
   </div>
 )
 }

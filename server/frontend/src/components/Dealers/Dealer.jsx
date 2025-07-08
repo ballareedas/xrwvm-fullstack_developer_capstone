@@ -91,7 +91,7 @@
 
 // export default Dealer
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import "./Dealers.css";
 import "../assets/style.css";
@@ -115,7 +115,7 @@ const Dealer = () => {
   const reviews_url = `${root_url}djangoapp/reviews/dealer/${id}`;
   const post_review = `${root_url}postreview/${id}`;
 
-  const get_dealer = async () => {
+  const get_dealer = useCallback(async () => {
     try {
       const res = await fetch(dealer_url, { method: "GET" });
       const retobj = await res.json();
@@ -126,9 +126,9 @@ const Dealer = () => {
     } catch (err) {
       console.error("Failed to fetch dealer:", err);
     }
-  };
+  }, [dealer_url]);
 
-  const get_reviews = async () => {
+  const get_reviews = useCallback(async () => {
     try {
       const res = await fetch(reviews_url, { method: "GET" });
       const retobj = await res.json();
@@ -142,7 +142,7 @@ const Dealer = () => {
     } catch (err) {
       console.error("Failed to fetch reviews:", err);
     }
-  };
+  }, [reviews_url]);
 
   const senti_icon = (sentiment) => {
     return sentiment === "positive"
