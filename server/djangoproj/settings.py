@@ -27,14 +27,14 @@ SECRET_KEY =\
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
-# CSRF_TRUSTED_ORIGINS = ['127.0.0.1']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','.onrender.com']
 
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8000',
     'http://127.0.0.1:3000',  # if React runs on 3000
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'https://CarDealershipSite.onrender.com'
 ]
 
 
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -75,12 +76,6 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'frontend/build/templates'),
         ],
 
-# TEMPLATES = [
-#     {r
-#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#         'DIRS': [
-#             os.path.join(BASE_DIR, 'frontend/templates'),  # Only Django templates here
-#         ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,7 +140,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
 MEDIA_URL = '/media/'
 
@@ -153,6 +148,8 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend/static'),
